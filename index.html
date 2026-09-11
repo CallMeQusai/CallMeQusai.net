@@ -1,0 +1,3598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CallMeQusai — Minecraft PvP</title>
+
+    <meta
+        name="description"
+        content="CallMeQusai — Competitive Minecraft PvP Player"
+    >
+
+    <meta
+        name="theme-color"
+        content="#ffffff"
+    >
+
+    <!-- Favicon -->
+    <link
+        rel="icon"
+        href="https://mc-heads.net/avatar/3YSi/128"
+        type="image/png"
+    >
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        /* =====================================================
+           VARIABLES
+        ===================================================== */
+
+        :root {
+
+            --white: #ffffff;
+            --white-light: #ffffff;
+            --white-dark: #d4d4d4;
+
+            --black: #050505;
+            --bg: #080808;
+
+            --card: rgba(17, 17, 17, 0.68);
+
+            --card-border:
+                rgba(255, 255, 255, 0.08);
+
+            --text: #f5f5f5;
+
+            --muted: #777;
+
+        }
+
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+
+            margin: 0;
+            padding: 0;
+
+            box-sizing: border-box;
+
+        }
+
+
+        html {
+
+            scroll-behavior: smooth;
+
+        }
+
+
+        body {
+
+            font-family:
+                "Inter",
+                sans-serif;
+
+            background:
+                #050505;
+
+            color:
+                var(--text);
+
+            overflow-x:
+                hidden;
+
+        }
+
+
+        a {
+
+            color:
+                inherit;
+
+            text-decoration:
+                none;
+
+        }
+
+
+        button {
+
+            font:
+                inherit;
+
+        }
+
+
+        /* =====================================================
+           ANIMATED BACKGROUND
+        ===================================================== */
+
+        body::before {
+
+            content: "";
+
+            position: fixed;
+
+            inset: 0;
+
+            pointer-events: none;
+
+            z-index: -5;
+
+            opacity: 0.035;
+
+            background-image:
+
+                linear-gradient(
+                    rgba(255,255,255,0.5) 1px,
+                    transparent 1px
+                ),
+
+                linear-gradient(
+                    90deg,
+                    rgba(255,255,255,0.5) 1px,
+                    transparent 1px
+                );
+
+            background-size:
+                70px 70px;
+
+            mask-image:
+                linear-gradient(
+                    to bottom,
+                    black,
+                    transparent 85%
+                );
+
+            animation:
+                gridMove 18s linear infinite;
+
+        }
+
+
+        @keyframes gridMove {
+
+            from {
+
+                transform:
+                    translateY(0);
+
+            }
+
+            to {
+
+                transform:
+                    translateY(70px);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           FLOATING GLOW
+        ===================================================== */
+
+        body::after {
+
+            content: "";
+
+            position: fixed;
+
+            width: 500px;
+            height: 500px;
+
+            left: 50%;
+            top: 10%;
+
+            transform:
+                translate(-50%, -50%);
+
+            border-radius:
+                50%;
+
+            background:
+                rgba(255,255,255,0.045);
+
+            filter:
+                blur(100px);
+
+            pointer-events:
+                none;
+
+            z-index:
+                -4;
+
+            animation:
+                backgroundFloat 8s ease-in-out infinite;
+
+        }
+
+
+        @keyframes backgroundFloat {
+
+            0%,
+            100% {
+
+                transform:
+                    translate(-50%, -50%)
+                    scale(1);
+
+            }
+
+            50% {
+
+                transform:
+                    translate(-50%, -45%)
+                    scale(1.2);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar {
+
+            position:
+                fixed;
+
+            top:
+                0;
+
+            left:
+                0;
+
+            right:
+                0;
+
+            height:
+                72px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            padding:
+                0 6%;
+
+            background:
+                rgba(5,5,5,0.55);
+
+            backdrop-filter:
+                blur(20px);
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.06);
+
+            z-index:
+                1000;
+
+            transition:
+                all 0.35s ease;
+
+        }
+
+
+        .navbar.scrolled {
+
+            background:
+                rgba(5,5,5,0.92);
+
+            border-bottom-color:
+                rgba(255,255,255,0.12);
+
+            box-shadow:
+                0 10px 40px
+                rgba(0,0,0,0.35);
+
+        }
+
+
+        .logo {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                10px;
+
+            font-family:
+                "Space Grotesk",
+                sans-serif;
+
+            font-weight:
+                800;
+
+            letter-spacing:
+                1px;
+
+        }
+
+
+        .logo-dot {
+
+            width:
+                9px;
+
+            height:
+                9px;
+
+            border-radius:
+                50%;
+
+            background:
+                #ffffff;
+
+            box-shadow:
+                0 0 10px
+                rgba(255,255,255,0.9),
+
+                0 0 25px
+                rgba(255,255,255,0.4);
+
+            animation:
+                pulseDot 2s ease-in-out infinite;
+
+        }
+
+
+        @keyframes pulseDot {
+
+            0%,
+            100% {
+
+                transform:
+                    scale(1);
+
+                box-shadow:
+                    0 0 10px
+                    rgba(255,255,255,0.8);
+
+            }
+
+            50% {
+
+                transform:
+                    scale(1.4);
+
+                box-shadow:
+                    0 0 20px
+                    rgba(255,255,255,1);
+
+            }
+
+        }
+
+
+        .nav-links {
+
+            display:
+                flex;
+
+            gap:
+                32px;
+
+        }
+
+
+        .nav-links a {
+
+            position:
+                relative;
+
+            color:
+                #999;
+
+            font-size:
+                13px;
+
+            font-weight:
+                600;
+
+            transition:
+                color 0.25s ease;
+
+        }
+
+
+        .nav-links a::after {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            left:
+                0;
+
+            bottom:
+                -7px;
+
+            width:
+                0;
+
+            height:
+                1px;
+
+            background:
+                #ffffff;
+
+            transition:
+                width 0.3s ease;
+
+        }
+
+
+        .nav-links a:hover {
+
+            color:
+                #ffffff;
+
+        }
+
+
+        .nav-links a:hover::after {
+
+            width:
+                100%;
+
+        }
+
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+
+            min-height:
+                100vh;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            text-align:
+                center;
+
+            padding:
+                130px 20px 80px;
+
+            position:
+                relative;
+
+        }
+
+
+        .hero-content {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+            animation:
+                heroEnter 1s
+                cubic-bezier(.2,.8,.2,1)
+                forwards;
+
+        }
+
+
+        @keyframes heroEnter {
+
+            from {
+
+                opacity:
+                    0;
+
+                transform:
+                    translateY(40px)
+                    scale(.97);
+
+            }
+
+            to {
+
+                opacity:
+                    1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+
+            }
+
+        }
+
+
+        .hero::after {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                650px;
+
+            height:
+                300px;
+
+            left:
+                50%;
+
+            bottom:
+                -120px;
+
+            transform:
+                translateX(-50%);
+
+            background:
+                rgba(255,255,255,0.06);
+
+            filter:
+                blur(110px);
+
+            pointer-events:
+                none;
+
+            animation:
+                heroGlow 5s ease-in-out infinite;
+
+        }
+
+
+        @keyframes heroGlow {
+
+            0%,
+            100% {
+
+                opacity:
+                    .45;
+
+                transform:
+                    translateX(-50%)
+                    scale(1);
+
+            }
+
+            50% {
+
+                opacity:
+                    .8;
+
+                transform:
+                    translateX(-50%)
+                    scale(1.2);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            gap:
+                9px;
+
+            padding:
+                9px 15px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.18);
+
+            border-radius:
+                999px;
+
+            background:
+                rgba(255,255,255,0.04);
+
+            color:
+                #ffffff;
+
+            font-size:
+                12px;
+
+            font-weight:
+                700;
+
+            margin-bottom:
+                28px;
+
+            animation:
+                statusFloat 3s ease-in-out infinite;
+
+        }
+
+
+        @keyframes statusFloat {
+
+            0%,
+            100% {
+
+                transform:
+                    translateY(0);
+
+            }
+
+            50% {
+
+                transform:
+                    translateY(-4px);
+
+            }
+
+        }
+
+
+        .status-dot {
+
+            width:
+                7px;
+
+            height:
+                7px;
+
+            border-radius:
+                50%;
+
+            background:
+                #ffffff;
+
+            box-shadow:
+                0 0 10px
+                #ffffff;
+
+            animation:
+                statusPulse 1.5s
+                ease-in-out infinite;
+
+        }
+
+
+        @keyframes statusPulse {
+
+            0%,
+            100% {
+
+                transform:
+                    scale(1);
+
+            }
+
+            50% {
+
+                transform:
+                    scale(1.5);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           AVATAR
+        ===================================================== */
+
+        .player-avatar {
+
+            width:
+                150px;
+
+            height:
+                150px;
+
+            margin:
+                0 auto 28px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            border-radius:
+                32px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.10),
+                    rgba(255,255,255,.015)
+                );
+
+            border:
+                1px solid
+                rgba(255,255,255,.22);
+
+            box-shadow:
+                0 0 50px
+                rgba(255,255,255,.08),
+
+                inset 0 0 30px
+                rgba(255,255,255,.04);
+
+            overflow:
+                hidden;
+
+            animation:
+                avatarFloat 4s
+                ease-in-out infinite;
+
+            transition:
+                .4s ease;
+
+        }
+
+
+        @keyframes avatarFloat {
+
+            0%,
+            100% {
+
+                transform:
+                    translateY(0);
+
+            }
+
+            50% {
+
+                transform:
+                    translateY(-10px);
+
+            }
+
+        }
+
+
+        .player-avatar:hover {
+
+            transform:
+                translateY(-8px)
+                scale(1.04);
+
+            border-color:
+                rgba(255,255,255,.5);
+
+            box-shadow:
+                0 0 70px
+                rgba(255,255,255,.18),
+
+                inset 0 0 40px
+                rgba(255,255,255,.07);
+
+        }
+
+
+        .player-avatar img {
+
+            width:
+                125px;
+
+            height:
+                125px;
+
+            image-rendering:
+                pixelated;
+
+            transition:
+                transform .5s
+                cubic-bezier(.2,.8,.2,1);
+
+        }
+
+
+        .player-avatar:hover img {
+
+            transform:
+                scale(1.12)
+                rotate(2deg);
+
+        }
+
+
+        /* =====================================================
+           HERO TITLE
+        ===================================================== */
+
+        .hero h1 {
+
+            font-family:
+                "Space Grotesk",
+                sans-serif;
+
+            font-size:
+                clamp(52px, 10vw, 110px);
+
+            line-height:
+                .95;
+
+            font-weight:
+                900;
+
+            letter-spacing:
+                -5px;
+
+            margin-bottom:
+                20px;
+
+            text-shadow:
+                0 0 40px
+                rgba(255,255,255,.12);
+
+            animation:
+                titleReveal 1.2s
+                .15s
+                cubic-bezier(.2,.8,.2,1)
+                both;
+
+        }
+
+
+        @keyframes titleReveal {
+
+            from {
+
+                opacity:
+                    0;
+
+                transform:
+                    translateY(25px)
+                    scale(.96);
+
+                filter:
+                    blur(8px);
+
+            }
+
+            to {
+
+                opacity:
+                    1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+
+                filter:
+                    blur(0);
+
+            }
+
+        }
+
+
+        .hero h1 span {
+
+            color:
+                #ffffff;
+
+        }
+
+
+        .subtitle {
+
+            color:
+                #aaa;
+
+            font-size:
+                17px;
+
+            margin-bottom:
+                10px;
+
+            animation:
+                fadeUp 1s .35s both;
+
+        }
+
+
+        .former {
+
+            color:
+                #666;
+
+            font-size:
+                13px;
+
+            margin-bottom:
+                30px;
+
+            animation:
+                fadeUp 1s .45s both;
+
+        }
+
+
+        .former strong {
+
+            color:
+                #aaa;
+
+        }
+
+
+        @keyframes fadeUp {
+
+            from {
+
+                opacity:
+                    0;
+
+                transform:
+                    translateY(15px);
+
+            }
+
+            to {
+
+                opacity:
+                    1;
+
+                transform:
+                    translateY(0);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        .hero-buttons {
+
+            display:
+                flex;
+
+            justify-content:
+                center;
+
+            gap:
+                12px;
+
+            flex-wrap:
+                wrap;
+
+            animation:
+                fadeUp 1s .55s both;
+
+        }
+
+
+        .btn {
+
+            position:
+                relative;
+
+            overflow:
+                hidden;
+
+            padding:
+                13px 21px;
+
+            border-radius:
+                10px;
+
+            font-size:
+                12px;
+
+            font-weight:
+                800;
+
+            letter-spacing:
+                .5px;
+
+            cursor:
+                pointer;
+
+            transition:
+                .3s ease;
+
+        }
+
+
+        .btn::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            top:
+                0;
+
+            left:
+                -120%;
+
+            width:
+                80%;
+
+            height:
+                100%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255,255,255,.5),
+                    transparent
+                );
+
+            transform:
+                skewX(-20deg);
+
+            transition:
+                left .6s ease;
+
+        }
+
+
+        .btn:hover::before {
+
+            left:
+                140%;
+
+        }
+
+
+        .btn-primary {
+
+            background:
+                #ffffff;
+
+            color:
+                #050505;
+
+            border:
+                1px solid #ffffff;
+
+            box-shadow:
+                0 0 20px
+                rgba(255,255,255,.12);
+
+        }
+
+
+        .btn-primary:hover {
+
+            transform:
+                translateY(-4px)
+                scale(1.03);
+
+            box-shadow:
+                0 10px 35px
+                rgba(255,255,255,.20);
+
+        }
+
+
+        .btn-secondary {
+
+            background:
+                rgba(255,255,255,.03);
+
+            color:
+                #ddd;
+
+            border:
+                1px solid
+                rgba(255,255,255,.12);
+
+        }
+
+
+        .btn-secondary:hover {
+
+            border-color:
+                rgba(255,255,255,.5);
+
+            color:
+                #ffffff;
+
+            transform:
+                translateY(-4px);
+
+            background:
+                rgba(255,255,255,.07);
+
+        }
+
+
+        /* =====================================================
+           SECTIONS
+        ===================================================== */
+
+        .section {
+
+            max-width:
+                1150px;
+
+            margin:
+                auto;
+
+            padding:
+                100px 25px;
+
+        }
+
+
+        .section-heading {
+
+            margin-bottom:
+                45px;
+
+        }
+
+
+        .eyebrow {
+
+            color:
+                #ffffff;
+
+            font-size:
+                11px;
+
+            font-weight:
+                800;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                2px;
+
+            margin-bottom:
+                10px;
+
+        }
+
+
+        .section-title {
+
+            font-family:
+                "Space Grotesk",
+                sans-serif;
+
+            font-size:
+                clamp(34px,5vw,52px);
+
+            font-weight:
+                800;
+
+            letter-spacing:
+                -2px;
+
+        }
+
+
+        .section-description {
+
+            color:
+                #777;
+
+            max-width:
+                600px;
+
+            margin-top:
+                12px;
+
+            line-height:
+                1.7;
+
+            font-size:
+                14px;
+
+        }
+
+
+        /* =====================================================
+           STATS
+        ===================================================== */
+
+        .stats {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(4,1fr);
+
+            gap:
+                15px;
+
+        }
+
+
+        .stat-card {
+
+            position:
+                relative;
+
+            overflow:
+                hidden;
+
+            padding:
+                25px;
+
+            border-radius:
+                16px;
+
+            background:
+                var(--card);
+
+            border:
+                1px solid
+                var(--card-border);
+
+            backdrop-filter:
+                blur(10px);
+
+            transition:
+                .35s
+                cubic-bezier(.2,.8,.2,1);
+
+            opacity:
+                0;
+
+            transform:
+                translateY(25px);
+
+        }
+
+
+        .stat-card.visible {
+
+            opacity:
+                1;
+
+            transform:
+                translateY(0);
+
+        }
+
+
+        .stat-card::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            inset:
+                -1px;
+
+            background:
+                radial-gradient(
+                    circle at var(--mouse-x,50%) var(--mouse-y,50%),
+                    rgba(255,255,255,.12),
+                    transparent 35%
+                );
+
+            opacity:
+                0;
+
+            transition:
+                opacity .3s;
+
+            pointer-events:
+                none;
+
+        }
+
+
+        .stat-card:hover::before {
+
+            opacity:
+                1;
+
+        }
+
+
+        .stat-card:hover {
+
+            transform:
+                translateY(-8px);
+
+            border-color:
+                rgba(255,255,255,.3);
+
+            box-shadow:
+                0 20px 50px
+                rgba(0,0,0,.3);
+
+        }
+
+
+        .stat-label {
+
+            color:
+                #666;
+
+            font-size:
+                11px;
+
+            font-weight:
+                700;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                1px;
+
+            margin-bottom:
+                12px;
+
+        }
+
+
+        .stat-number {
+
+            font-family:
+                "Space Grotesk",
+                sans-serif;
+
+            font-size:
+                30px;
+
+            font-weight:
+                800;
+
+            margin-bottom:
+                6px;
+
+        }
+
+
+        .stat-number.white {
+
+            color:
+                #ffffff;
+
+        }
+
+
+        .stat-small {
+
+            color:
+                #666;
+
+            font-size:
+                11px;
+
+        }
+
+
+        /* =====================================================
+           PROFILE
+        ===================================================== */
+
+        .profile-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(2,1fr);
+
+            gap:
+                18px;
+
+        }
+
+
+        .profile-card {
+
+            padding:
+                28px;
+
+            border-radius:
+                18px;
+
+            background:
+                var(--card);
+
+            border:
+                1px solid
+                var(--card-border);
+
+            backdrop-filter:
+                blur(10px);
+
+            transition:
+                .35s ease;
+
+            opacity:
+                0;
+
+            transform:
+                translateY(30px);
+
+        }
+
+
+        .profile-card.visible {
+
+            opacity:
+                1;
+
+            transform:
+                translateY(0);
+
+        }
+
+
+        .profile-card:hover {
+
+            transform:
+                translateY(-6px);
+
+            border-color:
+                rgba(255,255,255,.2);
+
+            box-shadow:
+                0 20px 60px
+                rgba(0,0,0,.3);
+
+        }
+
+
+        .profile-card h3 {
+
+            font-family:
+                "Space Grotesk",
+                sans-serif;
+
+            font-size:
+                20px;
+
+            margin-bottom:
+                25px;
+
+        }
+
+
+        .info-row {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            gap:
+                20px;
+
+            padding:
+                15px 0;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,.05);
+
+        }
+
+
+        .info-row:last-child {
+
+            border-bottom:
+                none;
+
+        }
+
+
+        .info-label {
+
+            color:
+                #666;
+
+            font-size:
+                12px;
+
+        }
+
+
+        .info-value {
+
+            color:
+                #ddd;
+
+            font-size:
+                13px;
+
+            font-weight:
+                700;
+
+            text-align:
+                right;
+
+        }
+
+
+        .info-value.white {
+
+            color:
+                #ffffff;
+
+        }
+
+
+        /* =====================================================
+           SKINS
+        ===================================================== */
+
+        .skin-showcase {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap:
+                30px;
+
+            align-items:
+                center;
+
+        }
+
+
+        .skin-main {
+
+            min-height:
+                500px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            border-radius:
+                22px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,.08),
+                    transparent 65%
+                );
+
+            border:
+                1px solid
+                var(--card-border);
+
+            overflow:
+                hidden;
+
+            position:
+                relative;
+
+        }
+
+
+        .skin-main::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                200px;
+
+            height:
+                200px;
+
+            border-radius:
+                50%;
+
+            background:
+                rgba(255,255,255,.05);
+
+            filter:
+                blur(60px);
+
+            animation:
+                skinGlow 4s
+                ease-in-out infinite;
+
+        }
+
+
+        @keyframes skinGlow {
+
+            0%,
+            100% {
+
+                transform:
+                    scale(1);
+
+            }
+
+            50% {
+
+                transform:
+                    scale(1.35);
+
+            }
+
+        }
+
+
+        .skin-main img {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+            height:
+                450px;
+
+            width:
+                auto;
+
+            image-rendering:
+                pixelated;
+
+            filter:
+                drop-shadow(
+                    0 20px 35px
+                    rgba(0,0,0,.7)
+                );
+
+            transition:
+                .5s
+                cubic-bezier(.2,.8,.2,1);
+
+        }
+
+
+        .skin-main:hover img {
+
+            transform:
+                translateY(-12px)
+                scale(1.04)
+                rotateY(-5deg);
+
+        }
+
+
+        .skin-list {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(2,1fr);
+
+            gap:
+                15px;
+
+        }
+
+
+        .skin-card {
+
+            position:
+                relative;
+
+            min-height:
+                220px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            border-radius:
+                16px;
+
+            background:
+                rgba(18,18,18,.7);
+
+            border:
+                1px solid
+                var(--card-border);
+
+            cursor:
+                pointer;
+
+            overflow:
+                hidden;
+
+            transition:
+                .35s
+                cubic-bezier(.2,.8,.2,1);
+
+        }
+
+
+        .skin-card:hover {
+
+            transform:
+                translateY(-8px)
+                scale(1.02);
+
+            border-color:
+                rgba(255,255,255,.35);
+
+            box-shadow:
+                0 15px 40px
+                rgba(0,0,0,.35);
+
+        }
+
+
+        .skin-card.active {
+
+            border-color:
+                #ffffff;
+
+            box-shadow:
+                0 0 30px
+                rgba(255,255,255,.10);
+
+        }
+
+
+        .skin-card img {
+
+            height:
+                180px;
+
+            image-rendering:
+                pixelated;
+
+            transition:
+                .4s ease;
+
+        }
+
+
+        .skin-card:hover img {
+
+            transform:
+                scale(1.08)
+                translateY(-4px);
+
+        }
+
+
+        .skin-number {
+
+            position:
+                absolute;
+
+            top:
+                12px;
+
+            left:
+                14px;
+
+            color:
+                #555;
+
+            font-size:
+                10px;
+
+            font-weight:
+                800;
+
+            letter-spacing:
+                1px;
+
+        }
+
+
+        /* =====================================================
+           HISTORY
+        ===================================================== */
+
+        .history {
+
+            padding:
+                10px 28px;
+
+        }
+
+
+        .history-item {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                70px 1fr 100px;
+
+            align-items:
+                center;
+
+            gap:
+                20px;
+
+            padding:
+                22px 0;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,.05);
+
+            transition:
+                .3s ease;
+
+        }
+
+
+        .history-item:last-child {
+
+            border-bottom:
+                none;
+
+        }
+
+
+        .history-item:hover {
+
+            padding-left:
+                10px;
+
+        }
+
+
+        .history-number {
+
+            color:
+                #555;
+
+            font-size:
+                11px;
+
+            font-weight:
+                800;
+
+        }
+
+
+        .history-name {
+
+            font-family:
+                "Space Grotesk",
+                sans-serif;
+
+            font-size:
+                20px;
+
+            font-weight:
+                700;
+
+        }
+
+
+        .history-name.white {
+
+            color:
+                #ffffff;
+
+        }
+
+
+        .history-date {
+
+            color:
+                #555;
+
+            font-size:
+                10px;
+
+            font-weight:
+                800;
+
+            text-align:
+                right;
+
+            letter-spacing:
+                1px;
+
+        }
+
+
+        /* =====================================================
+           SOCIALS
+        ===================================================== */
+
+        .social-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(3,1fr);
+
+            gap:
+                15px;
+
+        }
+
+
+        .social {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                15px;
+
+            padding:
+                20px;
+
+            border-radius:
+                15px;
+
+            background:
+                var(--card);
+
+            border:
+                1px solid
+                var(--card-border);
+
+            transition:
+                .35s
+                cubic-bezier(.2,.8,.2,1);
+
+            opacity:
+                0;
+
+            transform:
+                translateY(20px);
+
+        }
+
+
+        .social.visible {
+
+            opacity:
+                1;
+
+            transform:
+                translateY(0);
+
+        }
+
+
+        .social:hover {
+
+            transform:
+                translateY(-7px)
+                scale(1.02);
+
+            border-color:
+                rgba(255,255,255,.35);
+
+            background:
+                rgba(255,255,255,.05);
+
+            box-shadow:
+                0 15px 40px
+                rgba(0,0,0,.3);
+
+        }
+
+
+        .social-icon {
+
+            width:
+                42px;
+
+            height:
+                42px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            border-radius:
+                12px;
+
+            background:
+                rgba(255,255,255,.07);
+
+            border:
+                1px solid
+                rgba(255,255,255,.15);
+
+            color:
+                #ffffff;
+
+            font-weight:
+                900;
+
+            transition:
+                .3s ease;
+
+        }
+
+
+        .social:hover .social-icon {
+
+            transform:
+                rotate(-8deg)
+                scale(1.1);
+
+            background:
+                #ffffff;
+
+            color:
+                #050505;
+
+        }
+
+
+        .social-name {
+
+            font-size:
+                14px;
+
+            font-weight:
+                800;
+
+            margin-bottom:
+                4px;
+
+        }
+
+
+        .social-handle {
+
+            color:
+                #666;
+
+            font-size:
+                11px;
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+
+            max-width:
+                1150px;
+
+            margin:
+                auto;
+
+            padding:
+                35px 25px 50px;
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            gap:
+                20px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,.06);
+
+            color:
+                #555;
+
+            font-size:
+                11px;
+
+        }
+
+
+        footer strong {
+
+            color:
+                #999;
+
+        }
+
+
+        .footer-white {
+
+            color:
+                #ffffff;
+
+        }
+
+
+        /* =====================================================
+           TOAST
+        ===================================================== */
+
+        .toast {
+
+            position:
+                fixed;
+
+            left:
+                50%;
+
+            bottom:
+                30px;
+
+            transform:
+                translate(-50%,30px)
+                scale(.9);
+
+            padding:
+                12px 18px;
+
+            border-radius:
+                10px;
+
+            background:
+                #151515;
+
+            border:
+                1px solid
+                rgba(255,255,255,.25);
+
+            color:
+                #ddd;
+
+            font-size:
+                12px;
+
+            opacity:
+                0;
+
+            pointer-events:
+                none;
+
+            transition:
+                .35s
+                cubic-bezier(.2,.8,.2,1);
+
+            z-index:
+                2000;
+
+        }
+
+
+        .toast.show {
+
+            opacity:
+                1;
+
+            transform:
+                translate(-50%,0)
+                scale(1);
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width:850px) {
+
+            .stats {
+
+                grid-template-columns:
+                    repeat(2,1fr);
+
+            }
+
+
+            .skin-showcase {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .social-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+        }
+
+
+        @media (max-width:650px) {
+
+            .navbar {
+
+                padding:
+                    0 20px;
+
+            }
+
+
+            .nav-links {
+
+                gap:
+                    14px;
+
+            }
+
+
+            .nav-links a {
+
+                font-size:
+                    11px;
+
+            }
+
+
+            .hero h1 {
+
+                letter-spacing:
+                    -3px;
+
+            }
+
+
+            .player-avatar {
+
+                width:
+                    125px;
+
+                height:
+                    125px;
+
+            }
+
+
+            .player-avatar img {
+
+                width:
+                    105px;
+
+                height:
+                    105px;
+
+            }
+
+
+            .stats,
+            .profile-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .skin-list {
+
+                grid-template-columns:
+                    repeat(2,1fr);
+
+            }
+
+
+            .history-item {
+
+                grid-template-columns:
+                    45px 1fr 80px;
+
+            }
+
+
+            footer {
+
+                flex-direction:
+                    column;
+
+            }
+
+        }
+
+
+        @media (max-width:430px) {
+
+            .nav-links {
+
+                display:
+                    none;
+
+            }
+
+
+            .section {
+
+                padding:
+                    75px 18px;
+
+            }
+
+
+            .skin-main {
+
+                min-height:
+                    400px;
+
+            }
+
+
+            .skin-main img {
+
+                height:
+                    350px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ===================================================== -->
+
+    <nav class="navbar" id="navbar">
+
+        <a
+            href="#"
+            class="logo"
+        >
+
+            <span class="logo-dot"></span>
+
+            CALLMEQUSAI
+
+        </a>
+
+
+        <div class="nav-links">
+
+            <a href="#profile">
+                Profile
+            </a>
+
+            <a href="#skins">
+                Skins
+            </a>
+
+            <a href="#history">
+                History
+            </a>
+
+            <a href="#socials">
+                Socials
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =====================================================
+         HERO
+    ===================================================== -->
+
+    <header class="hero">
+
+        <div class="hero-content">
+
+
+            <div class="status">
+
+                <span class="status-dot"></span>
+
+                Minecraft PvP Player
+
+            </div>
+
+
+            <div class="player-avatar">
+
+                <img
+                    src="https://mc-heads.net/avatar/3YSi/256"
+                    alt="CallMeQusai Minecraft avatar"
+                >
+
+            </div>
+
+
+            <h1>
+
+                <span>C</span>allMeQusai
+
+            </h1>
+
+
+            <p class="subtitle">
+
+                Competitive Minecraft Player
+
+            </p>
+
+
+            <p class="former">
+
+                Formerly known as
+
+                <strong>
+                    Zaiphin
+                </strong>
+
+            </p>
+
+
+            <div class="hero-buttons">
+
+
+                <!-- NEW NAMEMC LINK -->
+
+                <a
+                    class="btn btn-primary"
+                    href="https://namemc.com/profile/CallMeQusai"
+                    target="_blank"
+                    rel="noopener"
+                >
+
+                    VIEW NAMEMC
+
+                </a>
+
+
+                <button
+                    class="btn btn-secondary"
+                    onclick="copyIGN()"
+                >
+
+                    COPY IGN
+
+                </button>
+
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         OVERVIEW
+    ===================================================== -->
+
+    <section class="section">
+
+
+        <div class="section-heading">
+
+            <div class="eyebrow">
+                Player Overview
+            </div>
+
+            <h2 class="section-title">
+                The Profile
+            </h2>
+
+            <p class="section-description">
+
+                A quick overview of the current
+                Minecraft identity and public profile.
+
+            </p>
+
+        </div>
+
+
+        <div class="stats">
+
+
+            <div class="stat-card reveal">
+
+                <div class="stat-label">
+                    Current IGN
+                </div>
+
+                <div class="stat-number white">
+                    CallMeQusai
+                </div>
+
+                <div class="stat-small">
+                    Current Minecraft name
+                </div>
+
+            </div>
+
+
+            <div class="stat-card reveal">
+
+                <div class="stat-label">
+                    Name History
+                </div>
+
+                <div class="stat-number">
+                    4
+                </div>
+
+                <div class="stat-small">
+                    Recorded names
+                </div>
+
+            </div>
+
+
+            <div class="stat-card reveal">
+
+                <div class="stat-label">
+                    Skins
+                </div>
+
+                <div class="stat-number">
+                    4
+                </div>
+
+                <div class="stat-small">
+                    NameMC skins
+                </div>
+
+            </div>
+
+
+            <div class="stat-card reveal">
+
+                <div class="stat-label">
+                    Capes
+                </div>
+
+                <div class="stat-number">
+                    2
+                </div>
+
+                <div class="stat-small">
+                    NameMC capes
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         PROFILE
+    ===================================================== -->
+
+    <section
+        class="section"
+        id="profile"
+    >
+
+
+        <div class="section-heading">
+
+            <div class="eyebrow">
+                Identity
+            </div>
+
+            <h2 class="section-title">
+                Player Profile
+            </h2>
+
+        </div>
+
+
+        <div class="profile-grid">
+
+
+            <div class="profile-card reveal">
+
+
+                <h3>
+                    Minecraft Identity
+                </h3>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Username
+                    </span>
+
+                    <span class="info-value white">
+                        CallMeQusai
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Previous Username
+                    </span>
+
+                    <span class="info-value">
+                        3YSi
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Profile
+                    </span>
+
+                    <span class="info-value">
+                        NameMC
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Skins
+                    </span>
+
+                    <span class="info-value">
+                        4
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Capes
+                    </span>
+
+                    <span class="info-value">
+                        2
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="profile-card reveal">
+
+
+                <h3>
+                    PvP Identity
+                </h3>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Role
+                    </span>
+
+                    <span class="info-value white">
+                        PvP Player
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Platform
+                    </span>
+
+                    <span class="info-value">
+                        Minecraft Java
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Status
+                    </span>
+
+                    <span class="info-value white">
+                        Active
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Theme
+                    </span>
+
+                    <span class="info-value">
+                        Black & White
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SKINS
+    ===================================================== -->
+
+    <section
+        class="section"
+        id="skins"
+    >
+
+
+        <div class="section-heading">
+
+            <div class="eyebrow">
+                Cosmetics
+            </div>
+
+            <h2 class="section-title">
+                Skin Collection
+            </h2>
+
+            <p class="section-description">
+
+                Minecraft skins connected to
+                the CallMeQusai profile.
+
+            </p>
+
+        </div>
+
+
+        <div class="skin-showcase">
+
+
+            <div class="skin-main">
+
+                <img
+                    id="mainSkin"
+                    src="https://mc-heads.net/body/3ysi/500"
+                    alt="CallMeQusai Minecraft skin"
+                >
+
+            </div>
+
+
+            <div class="skin-list">
+
+
+                <div
+                    class="skin-card active"
+                    onclick="changeSkin(this,1)"
+                >
+
+                    <span class="skin-number">
+                        01
+                    </span>
+
+                    <img
+                        src="https://mc-heads.net/body/3YSi/300"
+                        alt="Minecraft skin"
+                    >
+
+                </div>
+
+
+                <div
+                    class="skin-card"
+                    onclick="changeSkin(this,2)"
+                >
+
+                    <span class="skin-number">
+                        02
+                    </span>
+
+                    <img
+                        src="https://mc-heads.net/body/3YSI/300"
+                        alt="Minecraft skin"
+                    >
+
+                </div>
+
+
+                <div
+                    class="skin-card"
+                    onclick="changeSkin(this,3)"
+                >
+
+                    <span class="skin-number">
+                        03
+                    </span>
+
+                    <img
+                        src="https://mc-heads.net/body/3ysi/300"
+                        alt="Minecraft skin"
+                    >
+
+                </div>
+
+
+                <div
+                    class="skin-card"
+                    onclick="changeSkin(this,4)"
+                >
+
+                    <span class="skin-number">
+                        04
+                    </span>
+
+                    <img
+                        src="https://mc-heads.net/body/3ysi/300"
+                        alt="Minecraft skin"
+                    >
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         HISTORY
+    ===================================================== -->
+
+    <section
+        class="section"
+        id="history"
+    >
+
+
+        <div class="section-heading">
+
+            <div class="eyebrow">
+                History
+            </div>
+
+            <h2 class="section-title">
+                Name History
+            </h2>
+
+        </div>
+
+
+        <div class="profile-card history reveal">
+
+
+            <div class="history-item">
+
+                <div class="history-number">
+                    #04
+                </div>
+
+                <div class="history-name white">
+                    CallMeQusai
+                </div>
+
+                <div class="history-date">
+                    CURRENT
+                </div>
+
+            </div>
+
+
+            <div class="history-item">
+
+                <div class="history-number">
+                    #03
+                </div>
+
+                <div class="history-name">
+                    3YSi
+                </div>
+
+                <div class="history-date">
+                    PREVIOUS
+                </div>
+
+            </div>
+
+
+            <div class="history-item">
+
+                <div class="history-number">
+                    #02
+                </div>
+
+                <div class="history-name">
+                    iQ7z
+                </div>
+
+                <div class="history-date">
+                    PREVIOUS
+                </div>
+
+            </div>
+
+
+            <div class="history-item">
+
+                <div class="history-number">
+                    #01
+                </div>
+
+                <div class="history-name">
+                    187W_
+                </div>
+
+                <div class="history-date">
+                    PREVIOUS
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SOCIALS
+    ===================================================== -->
+
+    <section
+        class="section"
+        id="socials"
+    >
+
+
+        <div class="section-heading">
+
+            <div class="eyebrow">
+                Connect
+            </div>
+
+            <h2 class="section-title">
+                Socials
+            </h2>
+
+        </div>
+
+
+        <div class="social-grid">
+
+
+            <!-- NEW NAMEMC -->
+
+            <a
+                class="social reveal"
+                href="https://namemc.com/profile/CallMeQusai"
+                target="_blank"
+                rel="noopener"
+            >
+
+                <div class="social-icon">
+                    N
+                </div>
+
+                <div>
+
+                    <div class="social-name">
+                        NameMC
+                    </div>
+
+                    <div class="social-handle">
+                        /profile/CallMeQusai
+                    </div>
+
+                </div>
+
+            </a>
+
+
+            <!-- NEW DISCORD -->
+
+            <a
+                class="social reveal"
+                href="https://discord.com/users/1394719065771348019"
+                target="_blank"
+                rel="noopener"
+            >
+
+                <div class="social-icon">
+                    D
+                </div>
+
+                <div>
+
+                    <div class="social-name">
+                        Discord
+                    </div>
+
+                    <div class="social-handle">
+                        CallMeQusai
+                    </div>
+
+                </div>
+
+            </a>
+
+
+            <a
+                class="social reveal"
+                href="#"
+                onclick="
+                    showToast('Social link coming soon');
+                    return false;
+                "
+            >
+
+                <div class="social-icon">
+                    +
+                </div>
+
+                <div>
+
+                    <div class="social-name">
+                        More
+                    </div>
+
+                    <div class="social-handle">
+                        Add social
+                    </div>
+
+                </div>
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         FOOTER
+    ===================================================== -->
+
+    <footer>
+
+        <div>
+
+            <strong>
+                CALLMEQUSAI
+            </strong>
+
+            — Minecraft PvP
+
+        </div>
+
+
+        <div>
+
+            Built with
+
+            <span class="footer-white">
+                ♥
+            </span>
+
+            for PvP
+
+        </div>
+
+    </footer>
+
+
+    <!-- =====================================================
+         TOAST
+    ===================================================== -->
+
+    <div
+        class="toast"
+        id="toast"
+    >
+        Copied!
+    </div>
+
+
+    <script>
+
+        /* =====================================================
+           PLAYER DATA
+        ===================================================== */
+
+        const PLAYER = {
+
+            ign:
+                "CallMeQusai",
+
+            previousName:
+                "3YSi",
+
+            namemc:
+                "https://namemc.com/profile/CallMeQusai",
+
+            discord:
+                "https://discord.com/users/1394719065771348019",
+
+            minecraftAccount:
+                "CallMeQusai"
+
+        };
+
+
+        /* =====================================================
+           COPY IGN
+        ===================================================== */
+
+        function copyIGN() {
+
+            navigator.clipboard
+                .writeText(PLAYER.ign)
+                .then(() => {
+
+                    showToast(
+                        "IGN copied: CallMeQusai"
+                    );
+
+                })
+                .catch(() => {
+
+                    showToast(
+                        "Copy failed"
+                    );
+
+                });
+
+        }
+
+
+        /* =====================================================
+           TOAST
+        ===================================================== */
+
+        let toastTimer;
+
+
+        function showToast(message) {
+
+            const toast =
+                document.getElementById(
+                    "toast"
+                );
+
+
+            toast.textContent =
+                message;
+
+
+            toast.classList.add(
+                "show"
+            );
+
+
+            clearTimeout(
+                toastTimer
+            );
+
+
+            toastTimer =
+                setTimeout(() => {
+
+                    toast.classList.remove(
+                        "show"
+                    );
+
+                }, 2200);
+
+        }
+
+
+        /* =====================================================
+           SKIN SWITCH
+        ===================================================== */
+
+        function changeSkin(card, number) {
+
+            document
+                .querySelectorAll(".skin-card")
+                .forEach(item => {
+
+                    item.classList.remove(
+                        "active"
+                    );
+
+                });
+
+
+            card.classList.add(
+                "active"
+            );
+
+
+            const mainSkin =
+                document.getElementById(
+                    "mainSkin"
+                );
+
+
+            mainSkin.animate(
+
+                [
+
+                    {
+                        opacity: 0,
+
+                        transform:
+                            "scale(.9) translateY(10px)"
+
+                    },
+
+                    {
+                        opacity: 1,
+
+                        transform:
+                            "scale(1) translateY(0)"
+
+                    }
+
+                ],
+
+                {
+
+                    duration:
+                        450,
+
+                    easing:
+                        "cubic-bezier(.2,.8,.2,1)"
+
+                }
+
+            );
+
+
+            mainSkin.src =
+                "https://mc-heads.net/body/3YSi/500";
+
+
+            showToast(
+
+                `Skin ${String(number).padStart(2,"0")} selected`
+
+            );
+
+        }
+
+
+        /* =====================================================
+           NAVBAR SCROLL
+        ===================================================== */
+
+        const navbar =
+            document.getElementById(
+                "navbar"
+            );
+
+
+        window.addEventListener(
+            "scroll",
+            () => {
+
+                if (
+                    window.scrollY > 30
+                ) {
+
+                    navbar.classList.add(
+                        "scrolled"
+                    );
+
+                } else {
+
+                    navbar.classList.remove(
+                        "scrolled"
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           SCROLL REVEAL
+        ===================================================== */
+
+        const revealElements =
+            document.querySelectorAll(
+                ".reveal"
+            );
+
+
+        const revealObserver =
+            new IntersectionObserver(
+
+                entries => {
+
+                    entries.forEach(
+                        (entry, index) => {
+
+                            if (
+                                !entry.isIntersecting
+                            ) {
+                                return;
+                            }
+
+
+                            setTimeout(() => {
+
+                                entry.target.classList.add(
+                                    "visible"
+                                );
+
+                            }, index * 80);
+
+
+                            revealObserver.unobserve(
+                                entry.target
+                            );
+
+                        }
+                    );
+
+                },
+
+                {
+                    threshold:
+                        0.12
+                }
+
+            );
+
+
+        revealElements.forEach(
+            element => {
+
+                revealObserver.observe(
+                    element
+                );
+
+            }
+        );
+
+
+        /* =====================================================
+           CARD MOUSE GLOW
+        ===================================================== */
+
+        document
+            .querySelectorAll(
+                ".stat-card"
+            )
+            .forEach(card => {
+
+                card.addEventListener(
+                    "mousemove",
+                    event => {
+
+                        const rect =
+                            card.getBoundingClientRect();
+
+
+                        const x =
+                            event.clientX -
+                            rect.left;
+
+
+                        const y =
+                            event.clientY -
+                            rect.top;
+
+
+                        card.style.setProperty(
+                            "--mouse-x",
+                            `${x}px`
+                        );
+
+
+                        card.style.setProperty(
+                            "--mouse-y",
+                            `${y}px`
+                        );
+
+                    }
+                );
+
+            });
+
+
+        /* =====================================================
+           PARALLAX AVATAR
+        ===================================================== */
+
+        const avatar =
+            document.querySelector(
+                ".player-avatar"
+            );
+
+
+        document.addEventListener(
+            "mousemove",
+            event => {
+
+                if (
+                    window.innerWidth < 700
+                ) {
+                    return;
+                }
+
+
+                const x =
+                    (event.clientX /
+                        window.innerWidth -
+                        .5) *
+                    10;
+
+
+                const y =
+                    (event.clientY /
+                        window.innerHeight -
+                        .5) *
+                    10;
+
+
+                avatar.style.transform =
+
+                    `translate(${x}px, ${y}px)`;
+
+            }
+        );
+
+
+        /* =====================================================
+           RESET AVATAR WHEN MOUSE LEAVES
+        ===================================================== */
+
+        document.addEventListener(
+            "mouseleave",
+            () => {
+
+                avatar.style.transform =
+                    "";
+
+            }
+        );
+
+
+        /* =====================================================
+           CONSOLE
+        ===================================================== */
+
+        console.log(
+
+            "%cCallMeQusai",
+
+            `
+            color:#ffffff;
+            font-size:32px;
+            font-weight:900;
+            `
+
+        );
+
+
+        console.log(
+            "Minecraft PvP Player"
+        );
+
+    </script>
+
+
+</body>
+</html>
